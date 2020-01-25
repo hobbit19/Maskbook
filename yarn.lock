@@ -2372,10 +2372,10 @@
     asn1js "^2.0.22"
     tslib "^1.9.3"
 
-"@peculiar/json-schema@^1.1.5", "@peculiar/json-schema@^1.1.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@peculiar/json-schema/-/json-schema-1.1.6.tgz#134096ede59cf502e9acbdb24cbe55eb97ad2fe9"
-  integrity sha512-A8DM0ueA+LUqD/HuNPHDd8yMkhbRmnV0iosxyB/uOV1cfiKlCKXDeqkzHTOZpveRI05iCjZxqkPZ2+Nnw1wB4A==
+"@peculiar/json-schema@^1.1.5", "@peculiar/json-schema@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@peculiar/json-schema/-/json-schema-1.1.9.tgz#b746e046b787607a1b2804f64437fda2527b3e62"
+  integrity sha512-F2ST2y/IQPgY+1QMw1Q33sqJbGDCeO3lGqI69SL3Hgo0++7iHqprUB1QyxB/A7bN3tuM65MBxoM2JLbwh42lsQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -4263,11 +4263,6 @@ asap@~2.0.3, asap@~2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
-
-asmcrypto.js@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/asmcrypto.js/-/asmcrypto.js-0.22.0.tgz#38fc1440884d802c7bd37d1d23c2b26a5cd5d2d2"
-  integrity sha512-usgMoyXjMbx/ZPdzTSXExhMPur2FTdz/Vo5PVx2gIaBcdAAJNOFlsdgqveM8Cff7W0v+xrf9BwjOV26JSAF9qA==
 
 asmcrypto.js@^2.3.2:
   version "2.3.2"
@@ -6276,7 +6271,7 @@ core-js-pure@^3.0.1:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.2.1.tgz#879a23699cff46175bfd2d09158b5c50645a3c45"
   integrity sha512-+qpvnYrsi/JDeQTArB7NnNc2VoMYLE1YSkziCDHgjexC2KH7OFiGhLUd3urxfyWmNjSwSW7NYXPWHMhuIJx9Ow==
 
-core-js@3.6.0, core-js@^3.0.1, core-js@^3.0.4, core-js@^3.1.4, core-js@^3.4.1:
+core-js@3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.0.tgz#2b854e451de1967d1e29896025cdc13a2518d9ea"
   integrity sha512-AHPTNKzyB+YwgDWoSOCaid9PUSEF6781vsfiK8qUz62zRR448/XgK2NtCbpiUGizbep8Lrpt0Du19PpGGZvw3Q==
@@ -6290,6 +6285,11 @@ core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.3, core-js@^2.6.5:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
+
+core-js@^3.0.1, core-js@^3.0.4, core-js@^3.1.4, core-js@^3.4.1, core-js@^3.5.0:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.4.tgz#440a83536b458114b9cb2ac1580ba377dc470647"
+  integrity sha512-4paDGScNgZP2IXXilaffL9X7968RuvwlkK3xWtZRVqgd8SYNiVKRJvkFd1aqqEuPfN7E68ZHEp9hDj6lHj4Hyw==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -19000,27 +19000,29 @@ web3@^1.2.5-rc.0:
     web3-shh "1.2.5-rc.0"
     web3-utils "1.2.5-rc.0"
 
-webcrypto-core@^1.0.14, webcrypto-core@^1.0.15:
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/webcrypto-core/-/webcrypto-core-1.0.15.tgz#eeb445f613619acaca85b9b9ae046d1998f066f4"
-  integrity sha512-PA4VeKekgPxlmp18Opd4hrdOvtjsJCHyKpNfCyjLWEFIh/7M37QCFgCssx/MVBuNHBkzs9Q7W8Rm4BFgCKheUQ==
+webcrypto-core@^1.0.14, webcrypto-core@^1.0.17:
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/webcrypto-core/-/webcrypto-core-1.0.17.tgz#a9354bc0b1ba6735e882f4137ede2c4366e6ad9b"
+  integrity sha512-7jxTLgtM+TahBPErx/Dd2XvxFDfWJrHxjVeTSvIa4LSgiYrmCPlC2INiAMAfb8MbtHiwJKKqF5sPS0AWNjBbXw==
   dependencies:
-    pvtsutils "^1.0.6"
+    pvtsutils "^1.0.9"
     tslib "^1.10.0"
 
-webcrypto-liner@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/webcrypto-liner/-/webcrypto-liner-1.0.2.tgz#f4ba5dba083211ac4e4014eaed8e1b2faf896c26"
-  integrity sha512-ae8NeSgfM/9yAsG3L348NTQ4VmqWxwyvZHBMUGxLEgFSFJ9jeBUxYtf7uENos0+DmhqqcfWLXx3G3npRW1o5pQ==
+webcrypto-liner@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/webcrypto-liner/-/webcrypto-liner-1.1.4.tgz#a02e587cd772ca0bad2b862528ef4abbaf40d34e"
+  integrity sha512-p4ovRsS8hIyG8KnW2FyrWZG4rZY5eHow5IlNiyOXeisE4gbX3FMZzJPej1dhdxL67111yf0zW2H24qt0ny+JHQ==
   dependencies:
     "@peculiar/asn1-schema" "^1.0.3"
-    "@peculiar/json-schema" "^1.1.6"
-    asmcrypto.js "^0.22.0"
+    "@peculiar/json-schema" "^1.1.9"
+    asmcrypto.js "^2.3.2"
     asn1js "^2.0.26"
+    core-js "^3.5.0"
     des.js "^1.0.1"
     elliptic "^6.5.2"
-    pvtsutils "^1.0.6"
-    webcrypto-core "^1.0.15"
+    pvtsutils "^1.0.9"
+    tslib "^1.10.0"
+    webcrypto-core "^1.0.17"
 
 webextension-polyfill@^0.4.0:
   version "0.4.0"
