@@ -109,7 +109,9 @@
       "idb/with-async-ittr.js",
       "pvtsutils",
       "typeson",
-      "async-call-rpc"
+      "async-call-rpc",
+      "typeson-registry/dist/presets/builtin.js",
+      "anchorme"
     ]
   },
   "devDependencies": {

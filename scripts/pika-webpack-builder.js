@@ -12,6 +12,8 @@ const simpleSet = [
     'node-stego/es/grayscale',
     'node-stego/es/helper',
     'gun/sea',
+    'elliptic',
+    'webcrypto-liner',
 ]
 const map = (module.exports = new Map([
     ['gun/gun', 'gun'],

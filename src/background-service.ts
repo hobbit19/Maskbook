@@ -1,10 +1,5 @@
 import { GetContext } from '@holoflows/kit/es'
 import { MessageCenter } from './utils/messages'
-// @ts-ignore
-import elliptic from 'elliptic'
-
-Object.assign(window, { elliptic })
-require('webcrypto-liner')
 /**
  * Load service here. sorry for the ugly pattern.
  * But here's some strange problem with webpack.
@@ -16,10 +11,9 @@ import * as WelcomeService from './extension/background-script/WelcomeService'
 import * as IdentityService from './extension/background-script/IdentityService'
 import * as UserGroupService from './extension/background-script/UserGroupService'
 import * as SteganographyService from './extension/background-script/SteganographyService'
+import * as PluginService from './extension/background-script/PluginService'
 import { decryptFromMessageWithProgress } from './extension/background-script/CryptoServices/decryptFrom'
 import { initAutoShareToFriends } from './extension/background-script/Jobs/AutoShareToFriends'
-
-const PluginService = require('./extension/background-script/PluginService')
 
 Object.assign(window, {
     CryptoService,
@@ -35,8 +29,7 @@ Object.assign(window, {
     },
 })
 
-require('./extension/service')
-require('./provider.worker')
+import('./extension/service').then(() => import('./provider.worker'))
 
 if (GetContext() === 'background') {
     const injectedScript = `{
@@ -80,11 +73,9 @@ if (GetContext() === 'background') {
         }
     })
 
-    browser.runtime.onInstalled.addListener(detail => {
+    browser.runtime.onInstalled.addListener(async detail => {
         if (webpackEnv.target === 'WKWebview') return
-        const {
-            getWelcomePageURL,
-        } = require('./extension/options-page/Welcome/getWelcomePageURL') as typeof import('./extension/options-page/Welcome/getWelcomePageURL')
+        const { getWelcomePageURL } = await import('./extension/options-page/Welcome/getWelcomePageURL')
         if (detail.reason === 'install') {
             browser.tabs.create({ url: getWelcomePageURL() })
         }
@@ -120,9 +111,8 @@ function IgnoreError(arg: unknown): (reason: Error) => void {
         } else console.error('Inject error', e, arg, Object.entries(e))
     }
 }
-Object.assign(window, {
-    definedSocialNetworkWorkers: (require('./social-network/worker') as typeof import('./social-network/worker'))
-        .definedSocialNetworkWorkers,
+import('./social-network/worker').then(({ defineSocialNetworkWorker }) => {
+    Object.assign(globalThis, { defineSocialNetworkWorker })
 })
 
 import * as PersonaDB from './database/Persona/Persona.db'
@@ -130,19 +120,19 @@ import * as PersonaDBHelper from './database/Persona/helpers'
 
 // Friendly to debug
 Object.assign(window, {
-    gun1: require('./network/gun/version.1'),
-    gun2: require('./network/gun/version.2'),
-    crypto40: require('./crypto/crypto-alpha-40'),
-    crypto39: require('./crypto/crypto-alpha-39'),
-    crypto38: require('./crypto/crypto-alpha-38'),
+    gun1: import('./network/gun/version.1'),
+    gun2: import('./network/gun/version.2'),
+    crypto40: import('./crypto/crypto-alpha-40'),
+    crypto39: import('./crypto/crypto-alpha-39'),
+    crypto38: import('./crypto/crypto-alpha-38'),
     db: {
-        avatar: require('./database/avatar'),
-        group: require('./database/group'),
-        deprecated_people: require('./database/migrate/_deprecated_people_db'),
+        avatar: import('./database/avatar'),
+        group: import('./database/group'),
+        deprecated_people: import('./database/migrate/_deprecated_people_db'),
         persona: PersonaDB,
         personaHelper: PersonaDBHelper,
-        type: require('./database/type'),
-        post: require('./database/post'),
+        type: import('./database/type'),
+        post: import('./database/post'),
     },
 })
 initAutoShareToFriends()

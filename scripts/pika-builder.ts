@@ -6,7 +6,9 @@ const removeMap: Map<string, string> = _removeMap
 
 const preTransformTable = new Map<string, string>()
 preTransformTable.set('@holoflows/kit/es', '@holoflows/kit')
-preTransformTable.set('tiny-secp256k1', '/umd_modules/tiny-secp256k1.js')
+
+// @ts-ignore
+const importToken: ts.Expression = ts.createToken(ts.SyntaxKind.ImportKeyword)
 export default function(program: ts.Program, pluginOptions: {}) {
     return (ctx: ts.TransformationContext) => {
         return (sourceFile: ts.SourceFile) => {
@@ -41,6 +43,16 @@ export default function(program: ts.Program, pluginOptions: {}) {
                         node.exportClause,
                         ts.createStringLiteral(newPath),
                     )
+                } else if (ts.isCallExpression(node)) {
+                    // transform import(...)
+                    if (node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+                        const firstArg = node.arguments[0]
+                        if (ts.isStringLiteralLike(firstArg) && node.arguments.length === 1) {
+                            const newPath = rewriteImport(firstArg.text, sourceFile.fileName)
+                            return ts.createCall(importToken, undefined, [ts.createStringLiteral(newPath)])
+                        }
+                        return transformDynamicImport(node.arguments)
+                    }
                 }
                 // TODO: transform import(...)
                 return ts.visitEachChild(node, visitor, ctx)
@@ -205,6 +217,87 @@ ${deepFreeze.toString()}`,
         }
     } catch {}
     return imp
+}
+/**
+ * import(x) is transformed to
+ *
+import(
+    (x =>
+        x.match(/^(\.|\/)/g)
+            ? // local import, startsWith . or /, check if end with .js
+              x.endsWith('.js')
+                ? x
+                : x + '.js'
+            : // remote import, do nothing (https?://)
+            x.match(/^https?:\/\//g)
+            ? x
+            : // Bare import, change to /web_modules
+              '/web_modules/' + x + '.js')(x)
+)
+ */
+function transformDynamicImport(args: readonly ts.Expression[]) {
+    return ts.createCall(importToken, undefined, [
+        ts.createCall(
+            ts.createParen(
+                ts.createArrowFunction(
+                    undefined,
+                    undefined,
+                    [
+                        ts.createParameter(
+                            undefined,
+                            undefined,
+                            undefined,
+                            ts.createIdentifier('x'),
+                            undefined,
+                            undefined,
+                            undefined,
+                        ),
+                    ],
+                    undefined,
+                    ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                    ts.createConditional(
+                        ts.createCall(
+                            ts.createPropertyAccess(ts.createIdentifier('x'), ts.createIdentifier('match')),
+                            undefined,
+                            [ts.createRegularExpressionLiteral('/^(.|/)/g')],
+                        ),
+                        ts.createConditional(
+                            ts.createCall(
+                                ts.createPropertyAccess(ts.createIdentifier('x'), ts.createIdentifier('endsWith')),
+                                undefined,
+                                [ts.createStringLiteral('.js')],
+                            ),
+                            ts.createIdentifier('x'),
+                            ts.createBinary(
+                                ts.createIdentifier('x'),
+                                ts.createToken(ts.SyntaxKind.PlusToken),
+                                ts.createStringLiteral('.js'),
+                            ),
+                        ),
+                        ts.createConditional(
+                            ts.createCall(
+                                ts.createPropertyAccess(ts.createIdentifier('x'), ts.createIdentifier('match')),
+                                undefined,
+                                [ts.createRegularExpressionLiteral('/^https?:///g')],
+                            ),
+                            ts.createIdentifier('x'),
+                            ts.createBinary(
+                                ts.createBinary(
+                                    ts.createStringLiteral('/web_modules/'),
+                                    ts.createToken(ts.SyntaxKind.PlusToken),
+                                    ts.createIdentifier('x'),
+                                ),
+                                ts.createToken(ts.SyntaxKind.PlusToken),
+                                ts.createStringLiteral('.js'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            undefined,
+            args,
+        ),
+    ])
 }
 function deepFreeze(o: object) {
     Object.freeze(o)
